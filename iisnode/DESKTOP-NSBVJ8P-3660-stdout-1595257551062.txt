@@ -1,0 +1,2 @@
+Servidor escuchando por el puerto 3000
+Base de datos Mysql: [32monline[0m

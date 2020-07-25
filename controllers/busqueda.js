@@ -41,7 +41,20 @@ const busqueda = async(req, resp) => {
             });
             break;
         case 'cliente':
-            promesa = buscarClientes(busqueda, regex);
+            await buscarClientes(busqueda, async(clientesBD) => {
+                resp.status(200).json({
+                    ok: true,
+                    [tabla]: clientesBD
+                });
+            });
+            break;
+        case 'descuento':
+            await buscarDescuentos(busqueda, async(descuentosBD) => {
+                resp.status(200).json({
+                    ok: true,
+                    [tabla]: descuentosBD
+                });
+            });
             break;
         default:
             resp.status(400).json({
@@ -87,31 +100,27 @@ const buscarSubCategorias = async(busqueda, callback) => {
     });
 };
 
-
-
 const buscarProductos = async(busqueda, callback) => {
 
     let tipoOperacion = 4;
     await mysql.default.ejecutarQuery(`call PA_BUSQUEDA_CONSULTAR('${ busqueda }', ${ tipoOperacion})`, (err, productosBD) => {
         callback(productosBD[0]);
-
     });
-}
+};
 
-function buscarClientes(busqueda, regex) {
+const buscarClientes = async(busqueda, callback) => {
+    let tipoOperacion = 5;
+    await mysql.default.ejecutarQuery(`call PA_BUSQUEDA_CONSULTAR('${ busqueda }', ${ tipoOperacion})`, (err, clientesBD) => {
+        callback(clientesBD[0]);
+    });
+};
 
-    /*return new Promise((resolve, reject) => {
-        Cliente.find({ nombre: regex })
-            .populate('tipoDocumento', 'nombre')
-            .exec((err, clientes) => {
-                if (err) {
-                    reject('Error al cargar clientes', err);
-                } else {
-                    resolve(clientes);
-                }
-            });
-    });*/
-}
+const buscarDescuentos = async(busqueda, callback) => {
+    let tipoOperacion = 6;
+    await mysql.default.ejecutarQuery(`call PA_BUSQUEDA_CONSULTAR('${ busqueda }', ${ tipoOperacion})`, (err, descuentosBD) => {
+        callback(descuentosBD[0]);
+    });
+};
 
 module.exports = {
     busqueda

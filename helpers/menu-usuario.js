@@ -18,6 +18,7 @@ const getMenuUsuario = (rol = 'USER_ROLE') => {
                 { titulo: 'Productos', url: '/productos' },
                 { titulo: 'Clientes', url: '/clientes' },
                 { titulo: 'Código de Barras', url: '/codigobarras' },
+                { titulo: 'Descuentos', url: '/descuentos' },
                 /* { titulo: 'Gráficas', url: '/graficas1'},
                 { titulo: 'Promesas', url: '/promesas'}, */
             ]

@@ -6,7 +6,7 @@ const { getTipoDocumento } = require('../controllers/tipoDocumento');
 const router = Router();
 
 
-router.get('/', [validarJWT, validarADMIN_ROLE], getTipoDocumento);
+router.get('/', [validarJWT], getTipoDocumento);
 
 
 

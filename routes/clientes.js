@@ -2,16 +2,17 @@ const { Router } = require('express');
 const { check } = require('express-validator');
 const { validarCampos } = require('../middlewares/validar-campos');
 
-const { getClientes, crearCliente, actualizarCliente } = require('../controllers/clientes');
+const { getClientes, crearCliente, actualizarCliente, getClientexNumDocumento } = require('../controllers/clientes');
 const { validarJWT, validarADMIN_ROLE } = require('../middlewares/validar-jwt');
 
 const router = Router();
 
-router.get('/', [validarJWT, validarADMIN_ROLE], getClientes);
+router.get('/', [validarJWT], getClientes);
+
+router.get('/:numDocumento', [validarJWT], getClientexNumDocumento);
 
 router.post('/', [
     validarJWT,
-    validarADMIN_ROLE,
     check('nombre', 'El nombre es obligatorio').not().isEmpty(),
     check('apellido', 'El apellido es obligatorio').not().isEmpty(),
     check('idTipoDocumento', 'El id TipoDocumento es obligatorio').not().isEmpty(),
@@ -22,7 +23,6 @@ router.post('/', [
 
 router.put('/:id', [
     validarJWT,
-    validarADMIN_ROLE,
     check('nombre', 'El nombre es obligatorio').not().isEmpty(),
     check('apellido', 'El apellido es obligatorio').not().isEmpty(),
     check('idTipoDocumento', 'El id TipoDocumento es obligatorio').not().isEmpty(),

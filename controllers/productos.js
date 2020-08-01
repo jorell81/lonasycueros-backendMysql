@@ -33,6 +33,40 @@ const getProductos = async(req, resp) => {
     }
 };
 
+
+// ===============================================
+// Obtener producto por codigo de barras
+// ===============================================
+const getProductoxCodigoBarras = async(req, resp) => {
+    try {
+        let codigoBarras = req.params.codigo;
+        let tipoOperacion = 1;
+        let estado = (req.params.estado > 0) ? req.params.estado : null; // si llega cero se obtienen todos los productos
+        let myParams = `null, ${codigoBarras},1,${ tipoOperacion}`;
+        await mysql.default.ejecutarQuery('call PA_PRODUCTO_CONSULTAR(' + myParams + ')', (err, producto) => {
+
+            if (err) {
+                return resp.status(500).json({
+                    ok: false,
+                    msg: 'Error cargando Producto',
+                    errors: err
+                });
+            }
+
+            resp.json({
+                ok: true,
+                producto: producto[0]
+            });
+        });
+    } catch (error) {
+        resp.status(500).json({
+            ok: true,
+            msg: 'Error inesperado en la BD.',
+            error: error
+        });
+    }
+};
+
 // ===============================================
 // Crear un Producto
 // ===============================================
@@ -234,6 +268,7 @@ const insertarAuditoria = async(idProducto, productoAnterior, productoNuevo, acc
 
 module.exports = {
     getProductos,
+    getProductoxCodigoBarras,
     crearProducto,
     actualizarProducto,
     eliminarProducto

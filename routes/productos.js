@@ -2,12 +2,16 @@ const { Router } = require('express');
 const { check } = require('express-validator');
 const { validarCampos } = require('../middlewares/validar-campos');
 
-const { getProductos, crearProducto, actualizarProducto, eliminarProducto } = require('../controllers/productos');
+const { getProductos, getProductoxCodigoBarras, crearProducto, actualizarProducto, eliminarProducto } = require('../controllers/productos');
 const { validarJWT, validarADMIN_ROLE } = require('../middlewares/validar-jwt');
 
 const router = Router();
 
 router.get('/:estado', [validarJWT, validarADMIN_ROLE], getProductos);
+
+router.get('/codigo/:codigo', [validarJWT], getProductoxCodigoBarras);
+
+
 
 router.post('/', [
     validarJWT,

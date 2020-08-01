@@ -32,8 +32,40 @@ const getUsuarios = async(req, resp) => {
             error: error
         });
     }
+};
 
 
+// ===============================================
+// Obtener usuario x numero documento
+// ===============================================
+const getUsuarioxEmail = async(req, resp) => {
+
+    try {
+        let email = req.params.email;
+        let tipoOperacion = 1;
+        let myParams = `null,'${email}',null,${ tipoOperacion}`;
+        mysql.default.ejecutarQuery('call PA_USUARIO_CONSULTAR(' + myParams + ')', (err, usuario) => {
+
+            if (err) {
+                return resp.status(500).json({
+                    ok: false,
+                    msg: 'Error cargando usuario',
+                    errors: err
+                });
+            }
+
+            resp.json({
+                ok: true,
+                usuario: usuario[0]
+            });
+        });
+    } catch (error) {
+        resp.status(500).json({
+            ok: true,
+            msg: 'Error inesperado en la BD.',
+            error: error
+        });
+    }
 };
 
 // ===============================================
@@ -184,5 +216,6 @@ module.exports = {
     crearUsuario,
     actualizarUsuario,
     EliminarUsuario,
-    consultarUsuarioxId
+    consultarUsuarioxId,
+    getUsuarioxEmail
 };

@@ -22,6 +22,8 @@ app.use(Enviroment + '/api/subcategorias', require('./routes/subcategorias'));
 app.use(Enviroment + '/api/productos', require('./routes/productos'));
 app.use(Enviroment + '/api/clientes', require('./routes/clientes'));
 app.use(Enviroment + '/api/descuentos', require('./routes/descuentos'));
+app.use(Enviroment + '/api/ventas', require('./routes/ventas'));
+app.use(Enviroment + '/api/reportes', require('./routes/reportes'));
 app.use(Enviroment + '/api/tipoDocumento', require('./routes/tipoDocumento'));
 app.use(Enviroment + '/api/busqueda', require('./routes/busqueda'));
 app.use(Enviroment + '/api/login', require('./routes/auth'));

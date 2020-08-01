@@ -32,6 +32,38 @@ const getClientes = async(req, resp) => {
     }
 };
 
+
+// ===============================================
+// Obtener Cliente x ID
+// ===============================================
+const getClientexNumDocumento = async(req, resp) => {
+    try {
+        let numeroDocumento = req.params.numDocumento;
+        let tipoOperacion = 1;
+        let myParams = `null,${numeroDocumento},${ tipoOperacion}`;
+        await mysql.default.ejecutarQuery('call PA_CLIENTE_CONSULTAR(' + myParams + ')', (err, cliente) => {
+
+            if (err) {
+                return resp.status(500).json({
+                    ok: false,
+                    msg: 'Error cargando Cliente',
+                    errors: err
+                });
+            }
+
+            resp.json({
+                ok: true,
+                cliente: cliente[0]
+            });
+        });
+    } catch (error) {
+        resp.status(500).json({
+            ok: true,
+            msg: 'Error inesperado en la BD.',
+            error: error
+        });
+    }
+};
 // ===============================================
 // Crear un Cliente
 // ===============================================
@@ -167,5 +199,6 @@ const consultarClientexId = async(id, callback) => {
 module.exports = {
     getClientes,
     crearCliente,
-    actualizarCliente
+    actualizarCliente,
+    getClientexNumDocumento
 };
